@@ -12,7 +12,9 @@ jobs:
     - name: clone pkg
       run: git clone https://github.com/bytelang/plugin-pkg.git
     - name: install library
-      run: sudo apt-get install -y libavcodec-dev libavfilter-dev libavformat-dev libavutil-dev libspdlog-dev
+      run: sudo apt-get install -y libavcodec-dev libavfilter-dev libavformat-dev libavutil-dev
+    - name: complie library
+      run: git clone https://github.com/gabime/spdlog.git && cd spdlog && cmake . && make -j && sudo make install 
     - name: configure
       run: cmake .
     - name: make
