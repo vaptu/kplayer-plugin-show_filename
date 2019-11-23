@@ -9,12 +9,14 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: clone pkg
+    - name: install tools
+      run: sudo apt-get install -y yasm 
+    - name: clone kplayer pkg
       run: git clone https://github.com/bytelang/plugin-pkg.git
-    - name: install library
-      run: sudo apt-get install -y libavcodec-dev libavfilter-dev libavformat-dev libavutil-dev
-    - name: complie library
+    - name: complie spdlog
       run: git clone https://github.com/gabime/spdlog.git && cd spdlog && cmake . && make -j && sudo make install 
+    - name: complie ffmpeg
+      run: git clone https://git.ffmpeg.org/ffmpeg.git --depth=1 && cd ffmpeg && ./configure && make -j && sudo make install 
     - name: configure
       run: cmake .
     - name: make
