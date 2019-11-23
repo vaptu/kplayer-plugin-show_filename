@@ -10,13 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: install tools
-      run: sudo apt-get install -y yasm 
+      run: sudo apt-get install -y libavcodec58 libavfilter7 libavformat58 libavutil56 libspdlog-dev
     - name: clone kplayer pkg
       run: git clone https://github.com/bytelang/plugin-pkg.git
-    - name: complie spdlog
-      run: git clone https://github.com/gabime/spdlog.git && cd spdlog && cmake . && make -j && sudo make install 
-    - name: complie ffmpeg
-      run: git clone https://git.ffmpeg.org/ffmpeg.git --depth=1 && cd ffmpeg && ./configure && make -j && sudo make install 
     - name: configure
       run: cmake .
     - name: make
