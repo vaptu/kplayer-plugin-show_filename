@@ -5,12 +5,16 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-19.04
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: install tools
-      run: sudo apt-get install -y libavcodec58 libavfilter7 libavformat58 libavutil56 libspdlog-dev
+      run: sudo apt-get install -y yasm nasm
+    - name: complie spdlog
+      run: git clone https://github.com/gabime/spdlog.git && cd spdlog && cmake . && make -j && sudo make install 
+    - name: complie ffmpeg
+      run: git clone https://git.ffmpeg.org/ffmpeg.git --depth=1 && cd ffmpeg && ./configure && make -j && sudo make install
     - name: clone kplayer pkg
       run: git clone https://github.com/bytelang/plugin-pkg.git
     - name: configure
