@@ -9,12 +9,28 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Cache FFmpeg
+      uses: actions/cache@v1
+      with:
+        path: /usr/local/ffmpeg
+        key: ${{ runner.OS }}-npm-cache-ffmpeg
+        restore-keys: |
+          ${{ runner.OS }}-npm-cache-ffmpeg
+    - name: Cache Spdlog
+      uses: actions/cache@v1
+      with:
+        path: /usr/local/spdlog
+        key: ${{ runner.OS }}-npm-cache-spdlog
+        restore-keys: |
+          ${{ runner.OS }}-npm-cache-ffmpeg
     - name: install tools
       run: sudo apt-get install yasm nasm
     - name: complie ffmpeg library
-      run: git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && cd ffmpeg && ./configure && make -j && sudo make install
+      run: git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && cd ffmpeg && ./configure --prefix=/usr/local/ffmpeg && make -j && sudo make install
     - name: complie spdlog library
-      run: git clone https://github.com/gabime/spdlog.git spdlog && cd spdlog && cmake . && sudo make install
+      run: git clone https://github.com/gabime/spdlog.git spdlog && cd spdlog && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/spdlog . && sudo make install
+    - name: build
+      run: export PKG_CONFIG_PATH=/usr/local/spdlog/lib/pkgconfig:/usr/local/ffmpeg/lib/pkgconfig; pkg-config reload && git clone https://github.com/bytelang/plugin-pkg.git && cmake . && make
     - name: release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
