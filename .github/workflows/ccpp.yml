@@ -24,7 +24,7 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-npm-cache-ffmpeg
     - name: install tools
-      run: sudo apt-get install yasm nasm
+      run: sudo apt-get pkg-config
     - name: complie ffmpeg library
       run: if [ -d "/usr/local/ffmpeg" ]; then git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && cd ffmpeg && ./configure --prefix=/usr/local/ffmpeg && make -j && sudo make install; fi
     - name: complie spdlog library
