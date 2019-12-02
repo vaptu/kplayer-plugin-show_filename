@@ -9,8 +9,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: build
-      run: docker run -v $PWD:/data ubuntu:19.10 sh -c "apt-get update && apt-get install -y libavcodec58 libavfilter7 libavformat58 libavutil56 libspdlog-dev cmake g++ pkg-config && cd /data && pkg-config reload && cmake . && make -j"
+    - name: install tools
+      run: sudo apt-get install yasm nasm
+    - name: complie ffmpeg library
+      run: git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg && cd ffmpeg && make -j && sudo make install
+    - name: complie spdlog library
+      run: git clone https://github.com/gabime/spdlog.git spdlog && cd spdlog && cmake . && sudo make install
     - name: release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
