@@ -30,7 +30,7 @@ jobs:
     - name: complie spdlog library
       run: git clone https://github.com/gabime/spdlog.git spdlog && cd spdlog && cmake -DCMAKE_INSTALL_PREFIX=/usr/local/spdlog . && sudo make install
     - name: build
-      run: export PKG_CONFIG_PATH=/usr/local/spdlog/lib/pkgconfig:/usr/local/ffmpeg/lib/pkgconfig; pkg-config reload && git clone https://github.com/bytelang/plugin-pkg.git && cmake . && make
+      run: export PKG_CONFIG_PATH=/usr/local/spdlog/lib/pkgconfig:/usr/local/ffmpeg/lib/pkgconfig; pkg-config reload 
     - name: release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
